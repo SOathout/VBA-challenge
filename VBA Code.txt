@@ -1,0 +1,80 @@
+Sub vba_testing_homework()
+
+
+  
+  Dim ticker_name As String
+  Dim ticker_total As Double
+  ticker_total = 0
+  Dim Summary_Table_Row As Integer
+  Dim year_open As Double
+  Dim year_close As Double
+ 
+  
+  
+  
+  Cells(1, 9).Value = "Ticker"
+  Cells(1, 10).Value = "Yearly Change"
+  Cells(1, 11).Value = "Percent Change"
+  Cells(1, 12).Value = "Total Stock Volume"
+  
+  Cells(2, 9).Value = "ticker_name"
+  Cells(2, 10).Value = "yearly_change"
+  Cells(2, 11).Value = "percent_change"
+  Cells(2, 12).Value = "total_stock_volume"
+  
+  
+  
+  Summary_Table_Row = 2
+
+  For i = 2 To 70926
+  
+    If year_open = 0 Then
+        year_open = Cells(i, 3)
+       
+    End If
+    
+    If Cells(i - 1, 1) = Cells(i, 1) And Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+        year_close = Cells(i, 6).Value
+        yearly_change = year_close - year_open
+        percent_change = "=IFERROR((" & year_close & " - " & year_open & ")/" & year_open & ",0)"
+
+      ticker_name = Cells(i, 1).Value
+
+      ticker_total = ticker_total + Cells(i, 7).Value
+      
+      year_open = Cells(i, 3).Value
+      
+      year_closed = Cells(i, 6).Value
+
+      Range("i" & Summary_Table_Row).Value = ticker_name
+      
+      Range("j" & Summary_Table_Row).Value = yearly_change
+      
+      Range("k" & Summary_Table_Row).Value = percent_change
+
+      Range("l" & Summary_Table_Row).Value = ticker_total
+      
+      Range("k" & Summary_Table_Row).NumberFormat = "0.00%"
+      
+      If Range("K" & Summary_Table_Row).Value > 0 Then
+                Range("K" & Summary_Table_Row).Interior.ColorIndex = 4
+        Else
+                Range("K" & Summary_Table_Row).Interior.ColorIndex = 3
+        End If
+      
+      Summary_Table_Row = Summary_Table_Row + 1
+      
+      ticker_total = 0
+      
+    Else
+    
+      ticker_total = ticker_total + Cells(i, 7).Value
+    
+        
+        
+    End If
+
+
+  Next i
+
+End Sub
